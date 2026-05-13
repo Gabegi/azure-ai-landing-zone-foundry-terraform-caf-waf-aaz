@@ -5,5 +5,6 @@ terraform {
     container_name       = "ailz-platform"
     key                  = "platform.tfstate"
     use_oidc             = true
+    use_azuread_auth     = true
   }
 }
