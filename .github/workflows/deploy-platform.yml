@@ -11,6 +11,7 @@ jobs:
   plan:
     name: Terraform Plan
     runs-on: self-hosted
+    environment: prod
     env:
       ARM_USE_OIDC: "true"
       ARM_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
@@ -39,7 +40,6 @@ jobs:
     name: Terraform Apply
     needs: plan
     runs-on: self-hosted
-    environment: prod
     env:
       ARM_USE_OIDC: "true"
       ARM_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
