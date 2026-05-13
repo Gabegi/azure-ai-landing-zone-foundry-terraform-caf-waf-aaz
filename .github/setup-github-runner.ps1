@@ -6,10 +6,10 @@ $VM_NAME             = "vm-github-runner-lz-ai"
 $VM_SKU              = "Standard_DC1s_v3"
 $LOCATION            = "eastus"
 $MI_NAME             = "myamazingmi"
-$GITHUB_ORG          = "your-org"
-$GITHUB_REPO         = "your-repo"
+$GITHUB_ORG          = "Gabegi"
+$GITHUB_REPO         = "azure-ai-landing-zone-foundry-terraform-caf-waf-aaz"
 $GITHUB_ENV          = "prod"
-$GITHUB_RUNNER_TOKEN = "YOUR_TOKEN_FROM_GITHUB"
+$GITHUB_RUNNER_TOKEN = Read-Host "Enter GitHub runner token"
 
 # ============================================================
 # 1. Create VM
