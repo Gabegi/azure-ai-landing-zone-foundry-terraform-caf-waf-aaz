@@ -31,8 +31,9 @@ az vm create `
 # ============================================================
 az identity create -g $RG -n $MI_NAME -l $LOCATION
 
-$MI_ID     = az identity show -g $RG -n $MI_NAME --query id -o tsv
-$CLIENT_ID = az identity show -g $RG -n $MI_NAME --query clientId -o tsv
+$MI_ID       = az identity show -g $RG -n $MI_NAME --query id -o tsv
+$CLIENT_ID   = az identity show -g $RG -n $MI_NAME --query clientId -o tsv
+$PRINCIPAL_ID = az identity show -g $RG -n $MI_NAME --query principalId -o tsv
 $TENANT_ID = az account show --query tenantId -o tsv
 $SUB_ID    = Read-Host "Enter Azure Subscription ID"
 
@@ -63,15 +64,9 @@ az vm run-command invoke `
 # ============================================================
 # 5. Assign roles to managed identity for Terraform state
 # ============================================================
-az role assignment create `
-  --assignee $CLIENT_ID `
-  --role "Reader" `
-  --scope /subscriptions/$SUB_ID/resourceGroups/remote-state
+az role assignment create --assignee-object-id $PRINCIPAL_ID --assignee-principal-type ServicePrincipal --role "Reader" --scope /subscriptions/$SUB_ID/resourceGroups/remote-state
 
-az role assignment create `
-  --assignee $CLIENT_ID `
-  --role "Storage Blob Data Contributor" `
-  --scope /subscriptions/$SUB_ID/resourceGroups/remote-state/providers/Microsoft.Storage/storageAccounts/$SA_NAME
+az role assignment create --assignee-object-id $PRINCIPAL_ID --assignee-principal-type ServicePrincipal --role "Storage Blob Data Contributor" --scope /subscriptions/$SUB_ID/resourceGroups/remote-state/providers/Microsoft.Storage/storageAccounts/$SA_NAME
 
 # ============================================================
 # 6. Print values to add to GitHub Environment manually
