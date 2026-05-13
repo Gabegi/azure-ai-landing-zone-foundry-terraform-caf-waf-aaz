@@ -22,6 +22,12 @@ jobs:
       run:
         working-directory: platform/terraform
     steps:
+      - name: Mask sensitive values
+        run: |
+          echo "::add-mask::${{ vars.AZURE_CLIENT_ID }}"
+          echo "::add-mask::${{ vars.AZURE_TENANT_ID }}"
+          echo "::add-mask::${{ vars.AZURE_SUBSCRIPTION_ID }}"
+          echo "::add-mask::${{ vars.AZURE_OBJECT_ID }}"
       - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
       - name: Terraform Init
@@ -48,6 +54,12 @@ jobs:
       run:
         working-directory: platform/terraform
     steps:
+      - name: Mask sensitive values
+        run: |
+          echo "::add-mask::${{ vars.AZURE_CLIENT_ID }}"
+          echo "::add-mask::${{ vars.AZURE_TENANT_ID }}"
+          echo "::add-mask::${{ vars.AZURE_SUBSCRIPTION_ID }}"
+          echo "::add-mask::${{ vars.AZURE_OBJECT_ID }}"
       - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
       - name: Terraform Init
