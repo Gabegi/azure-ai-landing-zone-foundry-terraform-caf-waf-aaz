@@ -7,24 +7,7 @@ variable "location" {
 variable "management_group_root_id" {
   description = "ID of the root management group."
   type        = string
-}
-
-variable "subscription_id_management" {
-  description = "Subscription ID for the management platform subscription."
-  type        = string
-  sensitive   = true
-}
-
-variable "subscription_id_identity" {
-  description = "Subscription ID for the identity platform subscription."
-  type        = string
-  sensitive   = true
-}
-
-variable "subscription_id_connectivity" {
-  description = "Subscription ID for the connectivity platform subscription."
-  type        = string
-  sensitive   = true
+  default     = "AI-LZ-Playground"
 }
 
 variable "hub_address_space" {
