@@ -23,8 +23,6 @@ jobs:
         working-directory: platform/terraform
     steps:
       - uses: actions/checkout@v4
-      - name: Install dependencies
-        run: sudo apt-get update -y && sudo apt-get install -y unzip curl wget git jq nodejs npm
       - uses: hashicorp/setup-terraform@v3
       - name: Terraform Init
         run: terraform init
@@ -51,8 +49,6 @@ jobs:
         working-directory: platform/terraform
     steps:
       - uses: actions/checkout@v4
-      - name: Install dependencies
-        run: sudo apt-get update -y && sudo apt-get install -y unzip curl wget git jq nodejs npm
       - uses: hashicorp/setup-terraform@v3
       - name: Terraform Init
         run: terraform init
