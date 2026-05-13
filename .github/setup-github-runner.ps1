@@ -12,6 +12,7 @@ $GITHUB_ENV          = "prod"
 $GITHUB_RUNNER_TOKEN = Read-Host "Enter GitHub runner token"
 $SA_NAME             = Read-Host "Enter Terraform state storage account name"
 $SA_CONTAINER        = Read-Host "Enter Terraform state container name"
+$MG_ROOT_ID          = Read-Host "Enter root management group ID"
 
 # ============================================================
 # 1. Create VM
@@ -67,6 +68,10 @@ az vm run-command invoke `
 az role assignment create --assignee-object-id $PRINCIPAL_ID --assignee-principal-type ServicePrincipal --role "Reader" --scope /subscriptions/$SUB_ID/resourceGroups/remote-state
 
 az role assignment create --assignee-object-id $PRINCIPAL_ID --assignee-principal-type ServicePrincipal --role "Storage Blob Data Contributor" --scope /subscriptions/$SUB_ID/resourceGroups/remote-state/providers/Microsoft.Storage/storageAccounts/$SA_NAME
+
+az role assignment create --assignee-object-id $PRINCIPAL_ID --assignee-principal-type ServicePrincipal --role "Management Group Contributor" --scope "/providers/Microsoft.Management/managementGroups/$MG_ROOT_ID"
+
+az role assignment create --assignee-object-id $PRINCIPAL_ID --assignee-principal-type ServicePrincipal --role "Contributor" --scope "/subscriptions/$SUB_ID"
 
 # ============================================================
 # 6. Print values to add to GitHub Environment manually
