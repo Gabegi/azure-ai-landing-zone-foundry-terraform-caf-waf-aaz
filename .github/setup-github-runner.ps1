@@ -10,6 +10,8 @@ $GITHUB_ORG          = "Gabegi"
 $GITHUB_REPO         = "azure-ai-landing-zone-foundry-terraform-caf-waf-aaz"
 $GITHUB_ENV          = "prod"
 $GITHUB_RUNNER_TOKEN = Read-Host "Enter GitHub runner token"
+$SA_NAME             = Read-Host "Enter Terraform state storage account name"
+$SA_CONTAINER        = Read-Host "Enter Terraform state container name"
 
 # ============================================================
 # 1. Create VM
@@ -32,7 +34,7 @@ az identity create -g $RG -n $MI_NAME -l $LOCATION
 $MI_ID     = az identity show -g $RG -n $MI_NAME --query id -o tsv
 $CLIENT_ID = az identity show -g $RG -n $MI_NAME --query clientId -o tsv
 $TENANT_ID = az account show --query tenantId -o tsv
-$SUB_ID    = az account show --query id -o tsv
+$SUB_ID    = Read-Host "Enter Azure Subscription ID"
 
 az vm identity assign `
   --resource-group $RG `
@@ -59,7 +61,20 @@ az vm run-command invoke `
   --scripts "systemctl stop unattended-upgrades && apt-get update -y && apt-get install -y unzip curl wget git jq && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && apt-get install -y nodejs && mkdir -p /home/azureuser/actions-runner && cd /home/azureuser/actions-runner && curl -o runner.tar.gz -L https://github.com/actions/runner/releases/download/v2.317.0/actions-runner-linux-x64-2.317.0.tar.gz && tar xzf runner.tar.gz && RUNNER_ALLOW_RUNASROOT=1 ./config.sh --url https://github.com/$GITHUB_ORG/$GITHUB_REPO --token $GITHUB_RUNNER_TOKEN --name $VM_NAME --unattended && sudo ./svc.sh install && sudo ./svc.sh start"
 
 # ============================================================
-# 5. Print values to add to GitHub Environment manually
+# 5. Assign roles to managed identity for Terraform state
+# ============================================================
+az role assignment create `
+  --assignee $CLIENT_ID `
+  --role "Reader" `
+  --scope /subscriptions/$SUB_ID/resourceGroups/remote-state
+
+az role assignment create `
+  --assignee $CLIENT_ID `
+  --role "Storage Blob Data Contributor" `
+  --scope /subscriptions/$SUB_ID/resourceGroups/remote-state/providers/Microsoft.Storage/storageAccounts/$SA_NAME
+
+# ============================================================
+# 6. Print values to add to GitHub Environment manually
 # ============================================================
 Write-Host ""
 Write-Host "Add these to GitHub -> Settings -> Environments -> $GITHUB_ENV -> Variables:"
