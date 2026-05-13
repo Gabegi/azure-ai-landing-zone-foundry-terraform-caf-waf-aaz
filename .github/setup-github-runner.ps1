@@ -21,7 +21,8 @@ az vm create `
   --size $VM_SKU `
   --location $LOCATION `
   --admin-username azureuser `
-  --generate-ssh-keys
+  --generate- `
+  --public-ip-address ""
 
 # ============================================================
 # 2. Create UAMI and attach to VM
@@ -52,24 +53,10 @@ az identity federated-credential create `
 # ============================================================
 # 4. Install and start GitHub Actions runner on VM
 # ============================================================
-$runnerScript = @"
-mkdir -p /home/azureuser/actions-runner && \
-cd /home/azureuser/actions-runner && \
-curl -o runner.tar.gz -L https://github.com/actions/runner/releases/download/v2.317.0/actions-runner-linux-x64-2.317.0.tar.gz && \
-tar xzf runner.tar.gz && \
-RUNNER_ALLOW_RUNASROOT=1 ./config.sh \
-  --url https://github.com/$GITHUB_ORG/$GITHUB_REPO \
-  --token $GITHUB_RUNNER_TOKEN \
-  --name $VM_NAME \
-  --unattended && \
-sudo ./svc.sh install && \
-sudo ./svc.sh start
-"@
-
 az vm run-command invoke `
   -g $RG -n $VM_NAME `
   --command-id RunShellScript `
-  --scripts $runnerScript
+  --scripts "mkdir -p /home/azureuser/actions-runner && cd /home/azureuser/actions-runner && curl -o runner.tar.gz -L https://github.com/actions/runner/releases/download/v2.317.0/actions-runner-linux-x64-2.317.0.tar.gz && tar xzf runner.tar.gz && RUNNER_ALLOW_RUNASROOT=1 ./config.sh --url https://github.com/$GITHUB_ORG/$GITHUB_REPO --token $GITHUB_RUNNER_TOKEN --name $VM_NAME --unattended && sudo ./svc.sh install && sudo ./svc.sh start"
 
 # ============================================================
 # 5. Print values to add to GitHub Environment manually
