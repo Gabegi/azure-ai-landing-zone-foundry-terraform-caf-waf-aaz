@@ -16,8 +16,8 @@ variable "ai_platform_address_space" {
   default     = "10.1.0.0/16"
 }
 
-variable "ai_workloads_address_space" {
-  description = "Address space for the AI workloads virtual network."
+variable "ai_foundry_workload_address_space" {
+  description = "Address space for the AI Foundry workload virtual network."
   type        = string
   default     = "10.2.0.0/16"
 }
