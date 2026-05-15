@@ -10,10 +10,16 @@ variable "management_group_root_id" {
   default     = "AI-LZ-Playground"
 }
 
-variable "hub_address_space" {
-  description = "Address space for the hub virtual network."
+variable "ai_platform_address_space" {
+  description = "Address space for the AI platform virtual network."
   type        = string
-  default     = "10.0.0.0/16"
+  default     = "10.1.0.0/16"
+}
+
+variable "ai_workloads_address_space" {
+  description = "Address space for the AI workloads virtual network."
+  type        = string
+  default     = "10.2.0.0/16"
 }
 
 variable "log_analytics_retention_days" {
