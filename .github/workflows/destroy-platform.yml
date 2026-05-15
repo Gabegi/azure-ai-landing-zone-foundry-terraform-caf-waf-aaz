@@ -1,0 +1,48 @@
+name: Destroy Platform
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: 'Type DESTROY to confirm you want to destroy all platform infrastructure'
+        required: true
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  destroy:
+    name: Terraform Destroy
+    runs-on: self-hosted
+    environment: prod
+    env:
+      ARM_USE_OIDC: "true"
+      ARM_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
+      ARM_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+    defaults:
+      run:
+        working-directory: platform/terraform
+    steps:
+      - name: Mask sensitive values
+        run: |
+          echo "::add-mask::${{ vars.AZURE_CLIENT_ID }}"
+          echo "::add-mask::${{ vars.AZURE_TENANT_ID }}"
+          echo "::add-mask::${{ vars.AZURE_SUBSCRIPTION_ID }}"
+
+      - name: Validate confirmation
+        if: ${{ github.event.inputs.confirmation != 'DESTROY' }}
+        run: |
+          echo "Confirmation input must be exactly DESTROY. Got: ${{ github.event.inputs.confirmation }}"
+          exit 1
+
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve
