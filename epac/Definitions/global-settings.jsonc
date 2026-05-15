@@ -1,0 +1,17 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Azure/enterprise-azure-policy-as-code/main/Schemas/global-settings-schema.json",
+    "pacOwnerId": "contoso-ai",
+    "pacEnvironments": [
+        {
+            "pacSelector": "prod",
+            "cloud": "AzureCloud",
+            "tenantId": "$(AZURE_TENANT_ID)",
+            "deploymentRootScope": "/providers/Microsoft.Management/managementGroups/Contoso-AI",
+            "desiredState": {
+                "strategy": "full",
+                "keepDfcSecurityAssignments": false
+            },
+            "managedIdentityLocation": "westeurope"
+        }
+    ]
+}
