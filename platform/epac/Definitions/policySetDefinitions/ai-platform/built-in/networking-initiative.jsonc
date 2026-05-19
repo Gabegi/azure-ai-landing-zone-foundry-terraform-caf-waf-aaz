@@ -1,0 +1,131 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Azure/enterprise-azure-policy-as-code/main/Schemas/policy-set-definition-schema.json",
+    "name": "custom-ai-networking-governance",
+    "properties": {
+        "displayName": "AI Platform — Network Security",
+        "description": "Network isolation controls for Azure AI Services, AI Search and AI Foundry Hubs: restrict public access, enforce private endpoints and private link",
+        "metadata": {
+            "version": "1.0.0",
+            "category": "AI + Machine Learning"
+        },
+        "parameters": {},
+        "policyDefinitionGroups": [
+            { "name": "Microsoft.CognitiveServices", "displayName": "Azure AI Services" },
+            { "name": "Microsoft.Search",            "displayName": "Azure AI Search" },
+            { "name": "Microsoft.MachineLearningServices", "displayName": "Azure AI Foundry Hubs & Projects" }
+        ],
+        "policyDefinitions": [
+
+            // ── Azure AI Services ─────────────────────────────────────────────
+            // az policy definition list --query "[?contains(displayName,'AI Services resources should restrict')]" -o table
+            {
+                "policyDefinitionReferenceId": "ai-svcs-restrict-network",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000001-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.CognitiveServices" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'AI Services resources should use Azure Private Link')]" -o table
+            {
+                "policyDefinitionReferenceId": "ai-svcs-private-link",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000002-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.CognitiveServices" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Configure Cognitive Services to disable public network')]" -o table
+            {
+                "policyDefinitionReferenceId": "ai-svcs-modify-disable-public",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000003-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.CognitiveServices" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Configure Cognitive Services with private endpoints')]" -o table
+            {
+                "policyDefinitionReferenceId": "ai-svcs-dine-private-endpoint",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000004-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.CognitiveServices" ]
+            },
+
+            // ── Azure AI Search ───────────────────────────────────────────────
+            // az policy definition list --query "[?contains(displayName,'Azure AI Search service should use a SKU')]" -o table
+            {
+                "policyDefinitionReferenceId": "search-require-pl-sku",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000020-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.Search" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Azure AI Search services should disable public network')]" -o table
+            {
+                "policyDefinitionReferenceId": "search-deny-public-network",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000021-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.Search" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Configure Azure AI Search services to disable public')]" -o table
+            {
+                "policyDefinitionReferenceId": "search-modify-disable-public",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000022-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.Search" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Configure Azure AI Search services with private endpoints')]" -o table
+            {
+                "policyDefinitionReferenceId": "search-dine-private-endpoint",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000023-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.Search" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Azure AI Search Service should be Zone Redundant')]" -o table
+            {
+                "policyDefinitionReferenceId": "search-zone-redundant",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000024-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.Search" ]
+            },
+
+            // ── Azure AI Foundry Hubs & Projects ──────────────────────────────
+            // az policy definition list --query "[?contains(displayName,'Hubs should disable public network access')]" -o table
+            {
+                "policyDefinitionReferenceId": "foundry-deny-public-network",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000034-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.MachineLearningServices" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Hubs should use private link')]" -o table
+            {
+                "policyDefinitionReferenceId": "foundry-private-link",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000035-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.MachineLearningServices" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Configure hubs to disable public network access')]" -o table
+            {
+                "policyDefinitionReferenceId": "foundry-modify-disable-public",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000036-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.MachineLearningServices" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Configure Azure hubs with private endpoints')]" -o table
+            {
+                "policyDefinitionReferenceId": "foundry-dine-private-endpoint",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000037-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.MachineLearningServices" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Configure hubs to use private DNS zones')]" -o table
+            {
+                "policyDefinitionReferenceId": "foundry-dine-private-dns",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000038-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.MachineLearningServices" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Computes should be in a virtual network')]" -o table
+            {
+                "policyDefinitionReferenceId": "foundry-compute-in-vnet",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000039-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.MachineLearningServices" ]
+            }
+        ]
+    }
+}
