@@ -1,0 +1,55 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Azure/enterprise-azure-policy-as-code/main/Schemas/policy-set-definition-schema.json",
+    "name": "custom-ai-model-governance",
+    "properties": {
+        "displayName": "AI Platform — Model Governance",
+        "description": "Model governance controls for Azure AI Services and AI Foundry: approved registry models, content filtering for inputs and outputs",
+        "metadata": {
+            "version": "1.0.0",
+            "category": "AI + Machine Learning"
+        },
+        "parameters": {},
+        "policyDefinitionGroups": [
+            { "name": "Microsoft.CognitiveServices", "displayName": "Azure AI Services" }
+        ],
+        "policyDefinitions": [
+
+            // ── Azure AI Services ─────────────────────────────────────────────
+            // az policy definition list --query "[?contains(displayName,'Cognitive Services Deployments should only use approved Registry Models')]" -o table
+            {
+                "policyDefinitionReferenceId": "ai-svcs-approved-models",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000011-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.CognitiveServices" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'completion content filtering')]" -o table
+            {
+                "policyDefinitionReferenceId": "ai-svcs-output-content-filter",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000012-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.CognitiveServices" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'prompt content filtering')]" -o table
+            {
+                "policyDefinitionReferenceId": "ai-svcs-input-content-filter",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000013-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.CognitiveServices" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Deployments should only use allowed control')]" -o table
+            {
+                "policyDefinitionReferenceId": "ai-svcs-content-filter-control",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000014-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.CognitiveServices" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'allowed control mode')]" -o table
+            {
+                "policyDefinitionReferenceId": "ai-svcs-content-filter-control-mode",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000015-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.CognitiveServices" ]
+            }
+        ]
+    }
+}

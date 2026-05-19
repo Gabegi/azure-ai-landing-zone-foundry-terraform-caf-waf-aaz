@@ -1,0 +1,61 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Azure/enterprise-azure-policy-as-code/main/Schemas/policy-set-definition-schema.json",
+    "name": "custom-ai-data-protection-governance",
+    "properties": {
+        "displayName": "AI Platform — Data Protection",
+        "description": "Data protection controls for Azure AI Services, AI Search and AI Foundry Hubs: require CMK encryption and customer-owned storage",
+        "metadata": {
+            "version": "1.0.0",
+            "category": "AI + Machine Learning"
+        },
+        "parameters": {},
+        "policyDefinitionGroups": [
+            { "name": "Microsoft.CognitiveServices", "displayName": "Azure AI Services" },
+            { "name": "Microsoft.Search",            "displayName": "Azure AI Search" },
+            { "name": "Microsoft.MachineLearningServices", "displayName": "Azure AI Foundry Hubs & Projects" }
+        ],
+        "policyDefinitions": [
+
+            // ── Azure AI Services ─────────────────────────────────────────────
+            // az policy definition list --query "[?contains(displayName,'AI Services resources should encrypt data at rest with CMK')]" -o table
+            {
+                "policyDefinitionReferenceId": "ai-svcs-require-cmk",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000009-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.CognitiveServices" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Cognitive Services accounts should use customer owned storage')]" -o table
+            {
+                "policyDefinitionReferenceId": "ai-svcs-customer-storage",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000010-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.CognitiveServices" ]
+            },
+
+            // ── Azure AI Search ───────────────────────────────────────────────
+            // az policy definition list --query "[?contains(displayName,'Azure AI Search services should use customer-managed keys')]" -o table
+            {
+                "policyDefinitionReferenceId": "search-audit-cmk",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000028-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.Search" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Configure Azure AI Search services to enforce CMK')]" -o table
+            {
+                "policyDefinitionReferenceId": "search-deny-no-cmk",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000029-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.Search" ]
+            },
+
+            // ── Azure AI Foundry Hubs & Projects ──────────────────────────────
+            // az policy definition list --query "[?contains(displayName,'Hubs should be encrypted with a customer-managed key')]" -o table
+            {
+                "policyDefinitionReferenceId": "foundry-require-cmk",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000043-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.MachineLearningServices" ]
+            }
+        ]
+    }
+}
