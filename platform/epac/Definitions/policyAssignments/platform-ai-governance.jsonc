@@ -1,0 +1,60 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Azure/enterprise-azure-policy-as-code/main/Schemas/policy-assignment-schema.json",
+    "nodeName": "/Platform-AI-Governance/",
+    "scope": {
+        "prod": [
+            "/providers/Microsoft.Management/managementGroups/Contoso-AI"
+        ]
+    },
+    "children": [
+        {
+            "nodeName": "ai-services",
+            "assignment": {
+                "name": "assign-ai-services-gov",
+                "displayName": "AI Services Governance",
+                "description": "Applies network, identity, data protection, model governance and monitoring controls to Azure AI Services resources"
+            },
+            "definitionEntry": {
+                "policySetName": "custom-ai-services-governance"
+            },
+            "parameters": {
+                // Replace with your Log Analytics workspace resource ID
+                "logAnalyticsWorkspaceId": { "value": "REPLACE-WITH-LOG-ANALYTICS-WORKSPACE-RESOURCE-ID" },
+                // Replace with your Event Hub namespace authorization rule resource ID
+                "eventHubAuthorizationRuleId": { "value": "REPLACE-WITH-EVENT-HUB-AUTH-RULE-RESOURCE-ID" },
+                // Replace with your Storage Account resource ID
+                "storageAccountId": { "value": "REPLACE-WITH-STORAGE-ACCOUNT-RESOURCE-ID" }
+            }
+        },
+        {
+            "nodeName": "ai-search",
+            "assignment": {
+                "name": "assign-ai-search-gov",
+                "displayName": "AI Search Governance",
+                "description": "Applies network, identity, data protection and monitoring controls to Azure AI Search resources"
+            },
+            "definitionEntry": {
+                "policySetName": "custom-ai-search-governance"
+            },
+            "parameters": {
+                "logAnalyticsWorkspaceId": { "value": "REPLACE-WITH-LOG-ANALYTICS-WORKSPACE-RESOURCE-ID" },
+                "eventHubAuthorizationRuleId": { "value": "REPLACE-WITH-EVENT-HUB-AUTH-RULE-RESOURCE-ID" },
+                "storageAccountId": { "value": "REPLACE-WITH-STORAGE-ACCOUNT-RESOURCE-ID" }
+            }
+        },
+        {
+            "nodeName": "foundry-hubs",
+            "assignment": {
+                "name": "assign-foundry-hubs-gov",
+                "displayName": "Foundry Hubs & Projects Governance",
+                "description": "Applies network, identity, data protection, compute and monitoring controls to Azure AI Foundry Hubs and Projects"
+            },
+            "definitionEntry": {
+                "policySetName": "custom-foundry-hubs-governance"
+            },
+            "parameters": {
+                "logAnalyticsWorkspaceId": { "value": "REPLACE-WITH-LOG-ANALYTICS-WORKSPACE-RESOURCE-ID" }
+            }
+        }
+    ]
+}

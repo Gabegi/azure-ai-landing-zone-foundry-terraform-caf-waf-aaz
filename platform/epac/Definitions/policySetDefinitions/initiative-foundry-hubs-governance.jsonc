@@ -1,0 +1,141 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Azure/enterprise-azure-policy-as-code/main/Schemas/policy-set-definition-schema.json",
+    "name": "custom-foundry-hubs-governance",
+    "properties": {
+        "displayName": "Foundry Hubs & Projects Governance",
+        "description": "Network security, identity, data protection, compute governance and monitoring for Azure AI Foundry Hubs and Projects (Microsoft.MachineLearningServices)",
+        "metadata": {
+            "version": "1.0.0",
+            "category": "AI + Machine Learning"
+        },
+        "parameters": {
+            "logAnalyticsWorkspaceId": {
+                "type": "String",
+                "defaultValue": "",
+                "metadata": {
+                    "displayName": "Log Analytics Workspace Resource ID"
+                }
+            }
+        },
+        "policyDefinitionGroups": [
+            { "name": "Network Security" },
+            { "name": "Identity & Access" },
+            { "name": "Data Protection" },
+            { "name": "Compute Governance" },
+            { "name": "Monitoring" }
+        ],
+        "policyDefinitions": [
+
+            // ── Network Security ──────────────────────────────────────────────
+            // az policy definition list --query "[?contains(displayName,'Hubs should disable public network access')]" -o table
+            {
+                "policyDefinitionReferenceId": "foundry-deny-public-network",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000034-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Network Security" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Hubs should use private link')]" -o table
+            {
+                "policyDefinitionReferenceId": "foundry-private-link",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000035-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Network Security" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Configure hubs to disable public network access')]" -o table
+            {
+                "policyDefinitionReferenceId": "foundry-modify-disable-public",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000036-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Network Security" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Configure Azure hubs with private endpoints')]" -o table
+            {
+                "policyDefinitionReferenceId": "foundry-dine-private-endpoint",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000037-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Network Security" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Configure hubs to use private DNS zones')]" -o table
+            {
+                "policyDefinitionReferenceId": "foundry-dine-private-dns",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000038-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Network Security" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Computes should be in a virtual network')]" -o table
+            {
+                "policyDefinitionReferenceId": "foundry-compute-in-vnet",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000039-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Network Security" ]
+            },
+
+            // ── Identity & Access ─────────────────────────────────────────────
+            // az policy definition list --query "[?contains(displayName,'Hubs should use user-assigned managed identity')]" -o table
+            {
+                "policyDefinitionReferenceId": "foundry-require-uami",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000040-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Identity & Access" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Computes should have local authentication methods disabled')]" -o table
+            {
+                "policyDefinitionReferenceId": "foundry-deny-compute-local-auth",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000041-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Identity & Access" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Computes to disable local authentication methods')]" -o table
+            {
+                "policyDefinitionReferenceId": "foundry-modify-compute-local-auth",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000042-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Identity & Access" ]
+            },
+
+            // ── Data Protection ───────────────────────────────────────────────
+            // az policy definition list --query "[?contains(displayName,'Hubs should be encrypted with a customer-managed key')]" -o table
+            {
+                "policyDefinitionReferenceId": "foundry-require-cmk",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000043-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Data Protection" ]
+            },
+
+            // ── Compute Governance ────────────────────────────────────────────
+            // az policy definition list --query "[?contains(displayName,'Compute Instance should have idle shutdown')]" -o table
+            {
+                "policyDefinitionReferenceId": "foundry-compute-idle-shutdown",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000044-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Compute Governance" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Compute instances should be recreated to get the latest software')]" -o table
+            {
+                "policyDefinitionReferenceId": "foundry-compute-latest-updates",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000045-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Compute Governance" ]
+            },
+
+            // ── Monitoring ────────────────────────────────────────────────────
+            // az policy definition list --query "[?contains(displayName,'Resource logs in hubs should be enabled')]" -o table
+            {
+                "policyDefinitionReferenceId": "foundry-audit-resource-logs",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000046-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Monitoring" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Configure diagnostic settings for hubs') && contains(displayName,'Log Analytics')]" -o table
+            // TODO: verify parameter name with: az policy definition show --name <GUID> --query "properties.parameters"
+            {
+                "policyDefinitionReferenceId": "foundry-dine-log-la",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000047-0000-0000-0000-000000000000",
+                "parameters": {
+                    "logAnalytics": { "value": "[parameters('logAnalyticsWorkspaceId')]" }
+                },
+                "groupNames": [ "Monitoring" ]
+            }
+        ]
+    }
+}
