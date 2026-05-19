@@ -1,0 +1,96 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Azure/enterprise-azure-policy-as-code/main/Schemas/policy-set-definition-schema.json",
+    "name": "custom-ai-identity-governance",
+    "properties": {
+        "displayName": "AI Platform — Identity & Access",
+        "description": "Identity controls for Azure AI Services, AI Search and AI Foundry Hubs: disable local auth/keys, require managed identity",
+        "metadata": {
+            "version": "1.0.0",
+            "category": "AI + Machine Learning"
+        },
+        "parameters": {},
+        "policyDefinitionGroups": [
+            { "name": "Microsoft.CognitiveServices", "displayName": "Azure AI Services" },
+            { "name": "Microsoft.Search",            "displayName": "Azure AI Search" },
+            { "name": "Microsoft.MachineLearningServices", "displayName": "Azure AI Foundry Hubs & Projects" }
+        ],
+        "policyDefinitions": [
+
+            // ── Azure AI Services ─────────────────────────────────────────────
+            // az policy definition list --query "[?contains(displayName,'AI Services resources should have key access disabled')]" -o table
+            {
+                "policyDefinitionReferenceId": "ai-svcs-deny-key-access",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000005-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.CognitiveServices" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Configure AI Services to disable local key access')]" -o table
+            {
+                "policyDefinitionReferenceId": "ai-svcs-dine-disable-key-access",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000006-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.CognitiveServices" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Configure Cognitive Services to disable local authentication')]" -o table
+            {
+                "policyDefinitionReferenceId": "ai-svcs-modify-disable-local-auth",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000007-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.CognitiveServices" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Cognitive Services accounts should use a managed identity')]" -o table
+            {
+                "policyDefinitionReferenceId": "ai-svcs-require-msi",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000008-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.CognitiveServices" ]
+            },
+
+            // ── Azure AI Search ───────────────────────────────────────────────
+            // az policy definition list --query "[?contains(displayName,'Azure AI Search services should have local authentication methods disabled')]" -o table
+            {
+                "policyDefinitionReferenceId": "search-deny-local-auth",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000025-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.Search" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Configure Azure AI Search services to disable local authentication')]" -o table
+            {
+                "policyDefinitionReferenceId": "search-modify-disable-local-auth",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000026-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.Search" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Configure Azure AI Services resources to disable local key access')]" -o table
+            {
+                "policyDefinitionReferenceId": "search-dine-disable-local-key",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000027-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.Search" ]
+            },
+
+            // ── Azure AI Foundry Hubs & Projects ──────────────────────────────
+            // az policy definition list --query "[?contains(displayName,'Hubs should use user-assigned managed identity')]" -o table
+            {
+                "policyDefinitionReferenceId": "foundry-require-uami",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000040-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.MachineLearningServices" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Computes should have local authentication methods disabled')]" -o table
+            {
+                "policyDefinitionReferenceId": "foundry-deny-compute-local-auth",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000041-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.MachineLearningServices" ]
+            },
+            // az policy definition list --query "[?contains(displayName,'Computes to disable local authentication methods')]" -o table
+            {
+                "policyDefinitionReferenceId": "foundry-modify-compute-local-auth",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/00000042-0000-0000-0000-000000000000",
+                "parameters": {},
+                "groupNames": [ "Microsoft.MachineLearningServices" ]
+            }
+        ]
+    }
+}
